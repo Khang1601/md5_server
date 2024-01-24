@@ -12,6 +12,7 @@ export class UserService {
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
   }
+  
   // async create(data: CreateUserDto) {
   //   try {
   //     let user = await this.prisma.user.create({
