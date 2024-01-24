@@ -9,23 +9,23 @@ export class UserService {
 
   // constructor(private prisma: PrismaService) { }
 
-  // create(createUserDto: CreateUserDto) {
-  //   return 'This action adds a new user';
-  // }
-  async create(data: CreateUserDto) {
-    try {
-      let user = await this.prisma.user.create({
-        data
-      })
-      return {
-        data: user
-      }
-    } catch (err) {
-      return {
-        err
-      }
-    }
+  create(createUserDto: CreateUserDto) {
+    return 'This action adds a new user';
   }
+  // async create(data: CreateUserDto) {
+  //   try {
+  //     let user = await this.prisma.user.create({
+  //       data
+  //     })
+  //     return {
+  //       data: user
+  //     }
+  //   } catch (err) {
+  //     return {
+  //       err
+  //     }
+  //   }
+  // }
 
 
   findAll() {
