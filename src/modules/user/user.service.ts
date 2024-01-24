@@ -7,7 +7,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UserService {
 
 
-  constructor(private prisma: PrismaService) { }
+  // constructor(private prisma: PrismaService) { }
 
   // create(createUserDto: CreateUserDto) {
   //   return 'This action adds a new user';
