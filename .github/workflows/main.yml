@@ -1,0 +1,65 @@
+name: Deploy
+  
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+ 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:       
+    - name: Kết nối ssh linux -> và pull
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USER }}
+        password: ${{ secrets.PASSWORD }}
+        port: 22
+        script: |
+          echo "--------Truy cập vào thư mục dự án"
+          cd /var/www/test191/246_md5_server
+
+          echo "--------Pull code mới từ github"
+          git pull
+
+          echo "--------Kích hoạt NVM"
+          . $HOME/.nvm/nvm.sh
+          nvm use
+
+          echo "--------Tạo .env và chỉnh sửa"
+          cp .env.example .env
+          sed -i 's/NUMBER/${{ secrets.SV_PORT }}/g' .env
+          sed -i 's/HOST_ADDRESS/${{ secrets.SV_HOST }}/g' .env
+          sed -i 's/PROTOCOL_TYPE/https:\/\//g' .env
+          sed -i 's/DB_USER/${{ secrets.DB_USER }}/g' .env
+          sed -i 's/DB_PASSWORD/${{ secrets.DB_PASSWORD }}/g' .env
+          sed -i 's/DB_HOST/${{ secrets.HOST }}/g' .env
+          sed -i 's/DB_PORT/${{ secrets.DB_PORT }}/g' .env
+          sed -i 's/DB_NAME/${{ secrets.DB_NAME }}/g' .env
+
+          echo "--------Cài đặt package theo package.json"
+          npm ci
+
+          echo "Khởi tạo prisma client cho node module"
+          npx prisma generate
+
+          echo "--------Build dự án"
+          npm run build
+
+          echo "--------Reset Bộ Nhớ Swap"
+          sudo swapoff -a; sudo swapon -a
+
+          echo "--------Reset PM2"
+          pm2 delete all
+          pm2 start dist/main.js
+
+          echo "--------Gửi thông báo!"
+          curl -X POST -H "Content-Type: application/json" -H "Authorization:${{ secrets.DISCORD_TOKEN }}" -d '{"content":"Server của tôi đã deploy thành công link: https://api.dinhkhang.io.vn/ "}' ${{ secrets.DISCORD_URL }}
+      
