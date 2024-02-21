@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client'
 
 @Injectable()
-export class PrismaService extends PrismaClient{}
+export default class PrismaService extends PrismaClient {}
+
+
 
 /*
 Đây là khai báo class PrismaService mở rộng từ PrismaClient. 

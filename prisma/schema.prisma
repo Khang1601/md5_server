@@ -11,12 +11,33 @@ datasource db {
 }
 
 
-model User {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
-  userName  String @unique
-  password String
-  emailConfirm Boolean @default(false)
-  
+enum UserRole {
+  admin
+  member
 }
 
+enum UserStatus {
+  active
+  inactive
+}
+
+model users {
+  id    Int    @id @default(autoincrement())
+  userName String @unique
+  password String
+  email String @unique
+  emailAuthen Boolean @default(false)
+  role UserRole @default(member)
+  status UserStatus @default(active)
+  createAt String
+  updateAt String
+  avatar String @db.LongText
+  ipList user_ips[]
+}
+
+model user_ips {
+  id    Int    @id @default(autoincrement())
+  ip String
+  userId Int
+  user    users    @relation(fields: [userId], references: [id])
+}
