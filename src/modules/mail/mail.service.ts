@@ -54,7 +54,7 @@ export const template = {
         var email = {
             body: {
                 name: userName,
-                intro: 'Welcome to Khangshop! chúng tôi rất vui vì bạn đã tham gia cộng đồng Khangshop.',
+                intro: 'Welcome to Khangshop! Chúng tôi rất vui vì bạn đã tham gia cộng đồng Khangshop.',
                 action: {
                     instructions: 'Để có thể truy cập vào các tính năng nâng cao, bạn vui lòng bấm vào liên kết bên dưới để xác thực.',
                     button: {

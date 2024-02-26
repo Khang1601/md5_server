@@ -80,7 +80,7 @@ export class UsersService {
           ipList: true
         }
       })
-      if (!user) throw ("Khong tim thay nguoi dung")
+      if (!user) throw ("Không tìm thấy người dùng")
       return {
         data: user
       }

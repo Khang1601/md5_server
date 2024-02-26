@@ -33,6 +33,9 @@ model users {
   updateAt String
   avatar String @db.LongText
   ipList user_ips[]
+
+  receipts receipts[]
+
 }
 
 model user_ips {
@@ -41,3 +44,73 @@ model user_ips {
   userId Int
   user    users    @relation(fields: [userId], references: [id])
 }
+
+//==============================================================
+
+enum CategoryStatus {
+    active
+    inactive
+}
+
+model categories {
+  id    Int    @id @default(autoincrement())
+  title String @db.Char(50) @unique
+  avatar String @db.LongText	 
+  status CategoryStatus @default(inactive)
+}
+
+//==============================================================
+
+enum ReceiptStatus {
+  shopping
+  pending
+  accepted
+  shipping
+  done
+}
+
+enum PayMode {
+  cash
+  zalo
+}
+
+model receipts {
+  id    String    @id @default(uuid())
+  userId Int
+  user  users @relation(fields: [userId], references: [id])
+  total Float @default(0)
+  status ReceiptStatus @default(shopping)
+  paid Boolean @default(false)
+  payMode PayMode?  
+  createdAt String
+  receipt_details receipt_details[]
+}
+
+model receipt_details {
+  id    String    @id @default(uuid())
+  receiptId String
+  receipts    receipts    @relation(fields: [receiptId], references: [id])
+  productId Int
+  product    products    @relation(fields: [productId], references: [id])
+  quantity Int
+}
+
+//==============================================================
+
+model products {
+  id    Int    @id @default(autoincrement())
+  name  String
+
+  brand String
+  color String
+  sale String
+
+  type String
+
+  price Float
+  avatar String @default("https://banner2.cleanpng.com/20180215/qew/kisspng-laptop-scalable-vector-graphics-clip-art-notebook-transparent-cliparts-5a85f69d308421.0447059915187288611987.jpg")
+  // avatar String @db.LongText @default("https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png")
+  receipt_details receipt_details[]
+}
+
+
