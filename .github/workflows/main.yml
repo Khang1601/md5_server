@@ -59,7 +59,7 @@ jobs:
 
           echo "--------Reset PM2"
           pm2 delete all
-          pm2 start dist/main.js
+          pm2 start dist/src/main.js
 
           echo "--------Gửi thông báo!"
           curl -X POST -H "Content-Type: application/json" -H "Authorization:${{ secrets.DISCORD_TOKEN }}" -d '{"content":"NodeJS đã deploy thành công link: https://api.khangdev.io.vn/ "}' ${{ secrets.DISCORD_URL }}
