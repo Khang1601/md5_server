@@ -116,10 +116,16 @@ export class UsersController {
 
         let htmlString = 
         `
-        <h3>Tài khoản của bạn đang có truy cập tại ip: <b>${ip}</b>, bấm vào liên kết bên dưới để xác thực!</h3>
-        <a href="http://127.0.0.1:3000/api/v1/users/ip-confirm/${util.token.createToken(
+        <h3>Tài khoản của bạn đang có truy cập tại ip: <b>${ip}</b>, bấm vào liên kết bên dưới để xác thực!</h3> 
+        
+        <a href="http://127.0.0.1:3000/api/v1/users/ip-confirm/${util.token.createToken(     
           {...data, newIp: ip}, String(5*30*1000)
-        )}">Xac thuc ip</a>
+        )}">Xác thực IP</a>
+
+
+        <!-- <a href="http://103.245.237.16:3000/api/v1/users/ip-confirm/${util.token.createToken(
+          {...data, newIp: ip}, String(5*30*1000)
+        )}">Xac thuc ip</a>  -->
         `
 
         this.mailService.sendMail(data.email, "Xác thực vị trí đăng nhập mới", htmlString)
